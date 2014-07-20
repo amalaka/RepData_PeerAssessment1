@@ -5,35 +5,59 @@
 Load the data from the .csv file provided. 
 Transform date column to date type for processing
 
-```{r echo=TRUE}
+
+```r
 data <- read.csv("activity.csv")
 data$date <- as.Date(data$date)
-
 ```
 
 ## What is mean total number of steps taken per day?
 Draw the histogram of the total number of steps taken each day.
 Also, calculate the mean and median total number of steps taken per day
-```{r echo=TRUE}
+
+```r
 totalByDate <- tapply(data$steps, data$date, sum, na.rm=TRUE)
 hist(totalByDate,ylab ="Number of days", xlab="number of steps", main="Steps and Days")
-mean(totalByDate)
-median(totalByDate)
+```
 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+
+```r
+mean(totalByDate)
+```
+
+```
+## [1] 9354
+```
+
+```r
+median(totalByDate)
+```
+
+```
+## [1] 10395
 ```
 
 ## What is the average daily activity pattern?
 
 Drow a time series plot of the 5-minute interval and the average number of steps taken
 Also finds the 5-minute interval with the maximum number of steps.
-```{r}
+
+```r
 byInterval <- tapply(data$steps, data$interval, mean, na.rm=TRUE)
 byIntervalM <- data.frame(as.numeric(names(byInterval)), byInterval)
 plot(byIntervalM[,1], byIntervalM[,2], type = "l", main="Average Daily Activity Pattern", xlab="interval", ylab="steps (averaged)")
+```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+
+```r
 # Max number of steps in interval :
 byIntervalM[which.max(byIntervalM[,2]),][1,1]
+```
 
+```
+## [1] 835
 ```
 
 
@@ -45,10 +69,17 @@ byIntervalM[which.max(byIntervalM[,2]),][1,1]
 
 These values are different to previous histogram, mean and median values. THis is due to replacing 'NA's with the positive value (mean).
 
-```{r}
+
+```r
 missing <- is.na(data$steps)
 sum(missing)
+```
 
+```
+## [1] 2304
+```
+
+```r
 dataFilled <- data
 missing2  <- which(is.na(data$steps), arr.ind=TRUE)
 for (i in missing2) {
@@ -57,16 +88,32 @@ for (i in missing2) {
 
 totalByDate2 <- tapply(dataFilled$steps, dataFilled$date, sum, na.rm=TRUE)
 hist(totalByDate2,ylab ="Number of days", xlab="number of steps", main="Steps and Days")
-mean(totalByDate2)
-median(totalByDate2)
+```
 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+
+```r
+mean(totalByDate2)
+```
+
+```
+## [1] 10766
+```
+
+```r
+median(totalByDate2)
+```
+
+```
+## [1] 10766
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 Create a new factor variable named 'dayType'  with two levels – “weekday” and “weekend” 
 Drow a panel plot containing a time series plot for both 'weekday' and weekend'
-```{r}
+
+```r
 library(lattice) 
 
 day <- weekdays(dataFilled[,2])
@@ -91,5 +138,6 @@ names(byIntervalFrWd) <- c("interval", "mean", "dayType")
 names(byIntervalFrWe) <- c("interval", "mean", "dayType")
 byIntervalFr <- rbind(byIntervalFrWd, byIntervalFrWe)
 xyplot(mean ~ interval|dayType,byIntervalFr,type='l')
-
 ```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
