@@ -90,6 +90,6 @@ byIntervalFrWd <- data.frame(byIntervalFrWd, rep(c("Weekday"),each=length(byInte
 names(byIntervalFrWd) <- c("interval", "mean", "dayType")
 names(byIntervalFrWe) <- c("interval", "mean", "dayType")
 byIntervalFr <- rbind(byIntervalFrWd, byIntervalFrWe)
-xyplot(mean ~ interval|dayType,byIntervalFr,type='l')
+xyplot(mean ~ interval|dayType,byIntervalFr,type='l', layout=c(1,2),)
 
 ```
