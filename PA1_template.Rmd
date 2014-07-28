@@ -76,7 +76,7 @@ dayType[day == "Sunday" | day == "Saturday"] <- "weekend"
 
 dataFilled <- cbind(dataFilled, dayType)
 
-dataWe <- subset(dataFilled, dayType == "weekday")
+dataWe <- subset(dataFilled, dayType == "weekend")
 dataWd <- subset(dataFilled, dayType == "weekday")
 
 byIntervalWe <- tapply(dataWe$steps, dataWe$interval, mean)

@@ -123,7 +123,7 @@ dayType[day == "Sunday" | day == "Saturday"] <- "weekend"
 
 dataFilled <- cbind(dataFilled, dayType)
 
-dataWe <- subset(dataFilled, dayType == "weekday")
+dataWe <- subset(dataFilled, dayType == "weekend")
 dataWd <- subset(dataFilled, dayType == "weekday")
 
 byIntervalWe <- tapply(dataWe$steps, dataWe$interval, mean)
@@ -137,7 +137,7 @@ byIntervalFrWd <- data.frame(byIntervalFrWd, rep(c("Weekday"),each=length(byInte
 names(byIntervalFrWd) <- c("interval", "mean", "dayType")
 names(byIntervalFrWe) <- c("interval", "mean", "dayType")
 byIntervalFr <- rbind(byIntervalFrWd, byIntervalFrWe)
-xyplot(mean ~ interval|dayType,byIntervalFr,type='l')
+xyplot(mean ~ interval|dayType,byIntervalFr,type='l', layout=c(1,2),)
 ```
 
 ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
